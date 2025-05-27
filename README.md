@@ -1,24 +1,26 @@
-# Uninstall Graph
+# Uninstall-Graph PowerShell Module
 
 Completely uninstalls and removes all Microsoft Graph PowerShell modules from the system.
 
 ## Installation
 
-To install the `Uninstall-Graph` script, you can use the following PowerShell command:
+### From PowerShell Gallery (Recommended)
+
+To install the `Uninstall-Graph` module from PowerShell Gallery, use the following command:
 
 ```powershell
-Install-Script -Name Uninstall-Graph
+Install-Module Uninstall-Graph
 ```
 
 ## Usage
 
-To use the `Uninstall-Graph` script, simply run the following command in your PowerShell session:
+To use the `Uninstall-Graph` function, simply run:
 
 ```powershell
 Uninstall-Graph
 ```
 
-To run without elevated permision on Windows, you can use the`-SkipAdminCheck` parameter:
+Run without elevated permission on Windows:
 
 ```powershell
 Uninstall-Graph -SkipAdminCheck
