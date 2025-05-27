@@ -29,7 +29,7 @@ function Remove-ModuleDirectories {
         foreach ($path in $modulePaths) {
             if (Test-Path $path) {
                 try {
-                    Write-Host "→ $path" -ForegroundColor Yellow
+                    Write-Host "> $path" -ForegroundColor Yellow
                     Remove-Item -Path $path -Recurse -Force -ErrorAction Stop
                     Write-Host " ✅ Removed" -ForegroundColor Green
                 }
