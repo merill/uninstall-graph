@@ -38,7 +38,8 @@ function Remove-ModuleDirectories {
                     # Try to remove individual files
                     try {
                         Get-ChildItem -Path $path -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-                        Remove-Item -Path $path -Force -ErrorAction SilentlyContinue
+                        Remove-Item -Path $path -Force -Recurse -ErrorAction SilentlyContinue
+                        Write-Host " ✅ Removed" -ForegroundColor Green
                     }
                     catch {
                         Write-Warning " 🔺 Could not remove even with force."
