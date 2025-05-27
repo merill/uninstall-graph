@@ -43,3 +43,11 @@ This script is designed to ensure that all Microsoft Graph modules are thoroughl
 and restore your PowerShell environment to a clean state.
 
 You can then download and do a fresh install of the latest version of Microsoft Graph PowerShell modules.
+
+## Reporting issues
+
+If you run into any problems and edge cases with the module please open an issue. 
+
+Even better, if you find a resolution feel free to open a pull request.
+
+I'm hoping we can iron out all the edge cases over time. Thanks 🙏
