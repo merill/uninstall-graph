@@ -20,7 +20,7 @@ function Uninstall-GraphModulesFromGallery {
 
     foreach ($module in $InstalledModules) {
         try {
-            Write-Host "Uninstalling module: $($module.Name) version $($module.Version)" -ForegroundColor Cyan
+            Write-Host "$($module.Name) v$($module.Version)" -ForegroundColor Cyan -NoNewline
 
             if ($Force) {
                 Uninstall-Module -Name $module.Name -RequiredVersion $module.Version -Force -ErrorAction Stop
@@ -29,24 +29,25 @@ function Uninstall-GraphModulesFromGallery {
                 Uninstall-Module -Name $module.Name -RequiredVersion $module.Version -ErrorAction Stop
             }
 
-            Write-Host "Successfully uninstalled: $($module.Name)" -ForegroundColor Green
+            Write-Host " ✅ Uninstalled." -ForegroundColor Green
         }
         catch {
-            Write-Warning "Failed to uninstall $($module.Name): $($_.Exception.Message)"
+            Write-Verbose " Failed to uninstall $($module.Name): $($_.Exception.Message)"
 
             # Try uninstalling all versions
             try {
-                Write-Host "Attempting to uninstall all versions of $($module.Name)" -ForegroundColor Yellow
+                Write-Verbose " Attempting to uninstall all versions of $($module.Name)" -ForegroundColor Yellow
                 if ($Force) {
                     Uninstall-Module -Name $module.Name -AllVersions -Force -ErrorAction Stop
                 }
                 else {
                     Uninstall-Module -Name $module.Name -AllVersions -ErrorAction Stop
                 }
-                Write-Host "Successfully uninstalled all versions of: $($module.Name)" -ForegroundColor Green
+                Write-Host " ✅ Uninstalled." -ForegroundColor Green
             }
             catch {
-                Write-Warning "Failed to uninstall all versions of $($module.Name): $($_.Exception.Message)"
+                Write-Host " ⌛ Pending directory clean up." -ForegroundColor Green
+                Write-Verbose "   Uninstall-Module for $($module.Name) did not work. Will complete in module directory removal. $($_.Exception.Message)"
             }
         }
     }

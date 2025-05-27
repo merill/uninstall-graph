@@ -29,19 +29,19 @@ function Remove-ModuleDirectories {
         foreach ($path in $modulePaths) {
             if (Test-Path $path) {
                 try {
-                    Write-Host "Removing module directory: $path" -ForegroundColor Yellow
+                    Write-Host "📁 $path" -ForegroundColor Yellow
                     Remove-Item -Path $path -Recurse -Force -ErrorAction Stop
-                    Write-Host "Successfully removed: $path" -ForegroundColor Green
+                    Write-Host " ✅ Removed" -ForegroundColor Green
                 }
                 catch {
-                    Write-Warning "Failed to remove directory $path : $($_.Exception.Message)"
+                    Write-Verbose " Failed to remove directory $path : $($_.Exception.Message)"
                     # Try to remove individual files
                     try {
                         Get-ChildItem -Path $path -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
                         Remove-Item -Path $path -Force -ErrorAction SilentlyContinue
                     }
                     catch {
-                        Write-Warning "Could not remove $path even with force"
+                        Write-Warning " 🔺 Could not remove even with force."
                     }
                 }
             }

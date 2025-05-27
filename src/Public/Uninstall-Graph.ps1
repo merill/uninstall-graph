@@ -37,8 +37,9 @@ function Uninstall-Graph {
     )
 
     # Main execution
-    Write-Host "=== Microsoft Graph PowerShell Module Uninstaller ===" -ForegroundColor Magenta
-    Write-Host "This function will completely remove all Microsoft Graph PowerShell modules from your system." -ForegroundColor White
+    Write-Host "=== Microsoft Graph PowerShell Module Uninstaller ===" -ForegroundColor Cyan
+    Write-Host "This cmdlet will completely remove all Microsoft Graph PowerShell modules from your system." -ForegroundColor White
+    Write-Host "If you run into issues, try running with -Verbose for more info." -ForegroundColor White
     Write-Host ""
 
     # Check if running as administrator on Windows
@@ -60,7 +61,7 @@ function Uninstall-Graph {
         $installedGraphModules = Get-InstalledGraphModules
 
         if ($allGraphModules.Count -eq 0 -and $installedGraphModules.Count -eq 0) {
-            Write-Host "No Microsoft Graph modules found. Cleanup complete!" -ForegroundColor Green
+            Write-Host "👏 No Microsoft Graph modules found. Cleanup complete!" -ForegroundColor Green
             break
         }
 
@@ -69,13 +70,13 @@ function Uninstall-Graph {
 
         # First, try to uninstall using Uninstall-Module for gallery-installed modules
         if ($installedGraphModules.Count -gt 0) {
-            Write-Host "`nUninstalling modules using Uninstall-Module..." -ForegroundColor Yellow
+            Write-Host "`n🗑️ Uninstalling modules using Uninstall-Module..." -ForegroundColor Yellow
             Uninstall-GraphModulesFromGallery -InstalledModules $installedGraphModules -Force:$Force
         }
 
         # Then remove any remaining module directories
         if ($allGraphModules.Count -gt 0) {
-            Write-Host "`nRemoving remaining module directories..." -ForegroundColor Yellow
+            Write-Host "`n🧹 Cleaning up remaining module directories..." -ForegroundColor Yellow
             Remove-ModuleDirectories -Modules $allGraphModules
         }
 
@@ -121,6 +122,4 @@ function Uninstall-Graph {
         }
         Write-Host "  You may need to restart PowerShell and run this script again." -ForegroundColor Yellow
     }
-
-    Write-Host "`nFunction execution completed." -ForegroundColor White
 }
