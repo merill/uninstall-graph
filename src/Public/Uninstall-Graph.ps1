@@ -20,6 +20,9 @@
     .PARAMETER SkipAdminCheck
     Skips the administrator privileges check on Windows systems.
 
+    .PARAMETER Entra
+    Also uninstalls all Microsoft.Entra* modules in addition to Microsoft Graph modules.
+
     .EXAMPLE
     Uninstall-Graph
 
@@ -29,16 +32,26 @@
     Uninstall-Graph -SkipAdminCheck
 
     Runs the function without checking for administrator privileges.
+
+    .EXAMPLE
+    Uninstall-Graph -Entra
+
+    Uninstalls both Microsoft Graph and Microsoft Entra modules.
 #>
 function Uninstall-Graph {
     [CmdletBinding()]
     param(
-        [switch]$SkipAdminCheck
+        [switch]$SkipAdminCheck,
+        [switch]$Entra
     )
 
     # Main execution
     Write-Host "=== Microsoft Graph PowerShell Module Uninstaller ===" -ForegroundColor Cyan
-    Write-Host "This cmdlet will completely remove all Microsoft Graph PowerShell modules from your system." -ForegroundColor White
+    if ($Entra) {
+        Write-Host "This cmdlet will completely remove all Microsoft Graph and Microsoft Entra PowerShell modules from your system." -ForegroundColor White
+    } else {
+        Write-Host "This cmdlet will completely remove all Microsoft Graph PowerShell modules from your system." -ForegroundColor White
+    }
     Write-Host "If you run into issues, try running with -Verbose for more info." -ForegroundColor White
     Write-Host ""
 
@@ -57,11 +70,15 @@ function Uninstall-Graph {
         Write-Host "=== Iteration $iteration ===" -ForegroundColor Blue
 
         # Get all Graph modules (both installed and available)
-        $allGraphModules = Get-GraphModules
-        $installedGraphModules = Get-InstalledGraphModules
+        $allGraphModules = Get-GraphModules -IncludeEntra:$Entra
+        $installedGraphModules = Get-InstalledGraphModules -IncludeEntra:$Entra
 
         if ($allGraphModules.Count -eq 0 -and $installedGraphModules.Count -eq 0) {
-            Write-Host "👏 No Microsoft Graph modules found. Cleanup complete!" -ForegroundColor Green
+            if ($Entra) {
+                Write-Host "👏 No Microsoft Graph or Entra modules found. Cleanup complete!" -ForegroundColor Green
+            } else {
+                Write-Host "👏 No Microsoft Graph modules found. Cleanup complete!" -ForegroundColor Green
+            }
             break
         }
 
@@ -104,12 +121,17 @@ function Uninstall-Graph {
     Write-Host "`n=== Cleanup Summary ===" -ForegroundColor Magenta
 
     # Final check
-    $finalGraphModules = Get-GraphModules
-    $finalInstalledModules = Get-InstalledGraphModules
+    $finalGraphModules = Get-GraphModules -IncludeEntra:$Entra
+    $finalInstalledModules = Get-InstalledGraphModules -IncludeEntra:$Entra
 
     if ($finalGraphModules.Count -eq 0 -and $finalInstalledModules.Count -eq 0) {
-        Write-Host "✅ All Microsoft Graph PowerShell modules have been successfully removed!" -ForegroundColor Green
-        Write-Host "✅ Your system is now clean of Microsoft Graph PowerShell modules." -ForegroundColor Green
+        if ($Entra) {
+            Write-Host "✅ All Microsoft Graph and Entra PowerShell modules have been successfully removed!" -ForegroundColor Green
+            Write-Host "✅ Your system is now clean of Microsoft Graph and Entra PowerShell modules." -ForegroundColor Green
+        } else {
+            Write-Host "✅ All Microsoft Graph PowerShell modules have been successfully removed!" -ForegroundColor Green
+            Write-Host "✅ Your system is now clean of Microsoft Graph PowerShell modules." -ForegroundColor Green
+        }
         Write-Host "💡 We recommend closing this window and starting a new PowerShell session." -ForegroundColor Green
     }
     else {
