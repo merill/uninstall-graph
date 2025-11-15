@@ -31,7 +31,7 @@ function Remove-ModuleDirectories {
                 try {
                     Write-Host "$path" -ForegroundColor Yellow
                     Remove-Item -Path $path -Recurse -Force -ErrorAction Stop
-                    Write-Host " ✅ Removed" -ForegroundColor Green
+                    Write-ColorOutput " Removed" -ForegroundColor Green -Symbol Success
                 }
                 catch {
                     Write-Verbose " Failed to remove directory $path : $($_.Exception.Message)"
@@ -39,10 +39,10 @@ function Remove-ModuleDirectories {
                     try {
                         Get-ChildItem -Path $path -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
                         Remove-Item -Path $path -Force -Recurse -ErrorAction SilentlyContinue
-                        Write-Host " ✅ Removed" -ForegroundColor Green
+                        Write-ColorOutput " Removed" -ForegroundColor Green -Symbol Success
                     }
                     catch {
-                        Write-Warning " 🔺 Could not remove even with force."
+                        Write-ColorOutput " Could not remove even with force." -ForegroundColor Yellow -Symbol Error
                     }
                 }
             }
