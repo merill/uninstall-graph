@@ -86,11 +86,11 @@ function Uninstall-Graph {
 
         if ($allGraphModules.Count -eq 0 -and $installedGraphModules.Count -eq 0) {
             if ($All) {
-                Write-ColorOutput "No Microsoft Graph or Entra modules found. Cleanup complete!" -ForegroundColor Green -Symbol Clap
+                Write-ColorOutput "[+] No Microsoft Graph or Entra modules found. Cleanup complete!" -ForegroundColor Green
             } elseif ($Entra) {
-                Write-ColorOutput "No Microsoft Entra modules found. Cleanup complete!" -ForegroundColor Green -Symbol Clap
+                Write-ColorOutput "[+] No Microsoft Entra modules found. Cleanup complete!" -ForegroundColor Green
             } else {
-                Write-ColorOutput "No Microsoft Graph modules found. Cleanup complete!" -ForegroundColor Green -Symbol Clap
+                Write-ColorOutput "[+] No Microsoft Graph modules found. Cleanup complete!" -ForegroundColor Green
             }
             break
         }
@@ -100,13 +100,13 @@ function Uninstall-Graph {
 
         # First, try to uninstall using Uninstall-Module for gallery-installed modules
         if ($installedGraphModules.Count -gt 0) {
-            Write-ColorOutput "`nUninstalling modules using Uninstall-Module..." -ForegroundColor Yellow -Symbol Remove
+            Write-ColorOutput "`n[x] Uninstalling modules using Uninstall-Module..." -ForegroundColor Yellow
             Uninstall-GraphModulesFromGallery -InstalledModules $installedGraphModules -Force:$Force
         }
 
         # Then remove any remaining module directories
         if ($allGraphModules.Count -gt 0) {
-            Write-ColorOutput "`nCleaning up remaining module directories..." -ForegroundColor Yellow -Symbol Clean
+            Write-ColorOutput "`n[-] Cleaning up remaining module directories..." -ForegroundColor Yellow
             Remove-ModuleDirectories -Modules $allGraphModules
         }
 
@@ -131,7 +131,7 @@ function Uninstall-Graph {
 
     } while ($true)
 
-    Write-Host "\n=== Cleanup Summary ===" -ForegroundColor Magenta
+    Write-Host "`n=== Cleanup Summary ===" -ForegroundColor Magenta
 
     # Final check
     $finalGraphModules = Get-GraphModules -IncludeGraph:$(!$Entra) -IncludeEntra:($Entra -or $All)
@@ -139,19 +139,19 @@ function Uninstall-Graph {
 
     if ($finalGraphModules.Count -eq 0 -and $finalInstalledModules.Count -eq 0) {
         if ($All) {
-            Write-ColorOutput "All Microsoft Graph and Entra PowerShell modules have been successfully removed!" -ForegroundColor Green -Symbol Success
-            Write-ColorOutput "Your system is now clean of Microsoft Graph and Entra PowerShell modules." -ForegroundColor Green -Symbol Success
+            Write-ColorOutput "[*] All Microsoft Graph and Entra PowerShell modules have been successfully removed!" -ForegroundColor Green
+            Write-ColorOutput "[*] Your system is now clean of Microsoft Graph and Entra PowerShell modules." -ForegroundColor Green
         } elseif ($Entra) {
-            Write-ColorOutput "All Microsoft Entra PowerShell modules have been successfully removed!" -ForegroundColor Green -Symbol Success
-            Write-ColorOutput "Your system is now clean of Microsoft Entra PowerShell modules." -ForegroundColor Green -Symbol Success
+            Write-ColorOutput "[*] All Microsoft Entra PowerShell modules have been successfully removed!" -ForegroundColor Green
+            Write-ColorOutput "[*] Your system is now clean of Microsoft Entra PowerShell modules." -ForegroundColor Green
         } else {
-            Write-ColorOutput "All Microsoft Graph PowerShell modules have been successfully removed!" -ForegroundColor Green -Symbol Success
-            Write-ColorOutput "Your system is now clean of Microsoft Graph PowerShell modules." -ForegroundColor Green -Symbol Success
+            Write-ColorOutput "[*] All Microsoft Graph PowerShell modules have been successfully removed!" -ForegroundColor Green
+            Write-ColorOutput "[*] Your system is now clean of Microsoft Graph PowerShell modules." -ForegroundColor Green
         }
-        Write-ColorOutput "We recommend closing this window and starting a new PowerShell session." -ForegroundColor Green -Symbol Info
+        Write-ColorOutput "[>] We recommend closing this window and starting a new PowerShell session." -ForegroundColor Green
     }
     else {
-        Write-ColorOutput "Some modules may still remain:" -ForegroundColor Yellow -Symbol Warning
+        Write-ColorOutput "[!] Some modules may still remain:" -ForegroundColor Yellow
         if ($finalGraphModules.Count -gt 0) {
             Write-Host "  - $($finalGraphModules.Count) modules found in module paths" -ForegroundColor Red
         }

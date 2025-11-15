@@ -23,30 +23,30 @@ function Write-ColorOutput {
     param(
         [string]$Message,
         [string]$ForegroundColor = 'White',
-        [switch]$NoNewline,
-        [ValidateSet('Success', 'Warning', 'Clean', 'Remove', 'Info', 'Error', 'Pending', 'Clap', 'None')]
-        [string]$Symbol = 'None'
+        [switch]$NoNewline
     )
 
     # Determine if we can use emojis (PS 7+)
     $useEmoji = $PSVersionTable.PSVersion.Major -ge 7
 
-    # Map symbols to emoji and fallback characters
+    # Map ASCII placeholders to emoji (PS7+) and ASCII symbols (PS5.1)
     # Using Unicode code points to avoid PS 5.1 parsing issues with emoji literals
-    $symbols = @{
-        'Success' = if ($useEmoji) { [char]::ConvertFromUtf32(0x2705) } else { '[*]' }
-        'Warning' = if ($useEmoji) { [char]::ConvertFromUtf32(0x26A0) + [char]::ConvertFromUtf32(0xFE0F) + ' ' } else { '[!]' }
-        'Clean'   = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F9F9) } else { '[-]' }
-        'Remove'  = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F5D1) + [char]::ConvertFromUtf32(0xFE0F) + ' ' } else { '[x]' }
-        'Info'    = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F4A1) } else { '[*]' }
-        'Error'   = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F53A) } else { '[X]' }
-        'Pending' = if ($useEmoji) { [char]::ConvertFromUtf32(0x231B) } else { '[~]' }
-        'Clap'    = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F44F) } else { '[+]' }
-        'None'    = ''
+    $replacements = @{
+        '[*]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x2705) } else { '[*]' }  # Success/checkmark
+        '[!]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x26A0) + [char]::ConvertFromUtf32(0xFE0F) + ' ' } else { '[!]' }  # Warning
+        '[-]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F9F9) } else { '[-]' }  # Clean/broom
+        '[x]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F5D1) + [char]::ConvertFromUtf32(0xFE0F) + ' ' } else { '[x]' }  # Remove/trash
+        '[>]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F4A1) } else { '[>]' }  # Info/lightbulb
+        '[?]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F53A) } else { '[?]' }  # Error/red triangle
+        '[~]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x231B) } else { '[~]' }  # Pending/hourglass
+        '[+]' = if ($useEmoji) { [char]::ConvertFromUtf32(0x1F44F) } else { '[+]' }  # Done/clapping
     }
 
-    $prefix = if ($Symbol -ne 'None') { "$($symbols[$Symbol]) " } else { '' }
-    $fullMessage = "$prefix$Message"
+    # Replace all ASCII placeholders in the message
+    $fullMessage = $Message
+    foreach ($placeholder in $replacements.Keys) {
+        $fullMessage = $fullMessage.Replace($placeholder, $replacements[$placeholder])
+    }
 
     if ($NoNewline) {
         Write-Host $fullMessage -ForegroundColor $ForegroundColor -NoNewline

@@ -29,7 +29,7 @@ function Uninstall-GraphModulesFromGallery {
                 Uninstall-Module -Name $module.Name -RequiredVersion $module.Version -ErrorAction Stop
             }
 
-            Write-Host " ✅ Uninstalled." -ForegroundColor Green
+            Write-ColorOutput " [*] Uninstalled" -ForegroundColor Green
         }
         catch {
             Write-Verbose " Failed to uninstall $($module.Name): $($_.Exception.Message)"
@@ -43,10 +43,10 @@ function Uninstall-GraphModulesFromGallery {
                 else {
                     Uninstall-Module -Name $module.Name -AllVersions -ErrorAction Stop
                 }
-                Write-ColorOutput " Uninstalled." -ForegroundColor Green -Symbol Success
+                Write-ColorOutput " [*] Uninstalled" -ForegroundColor Green
             }
             catch {
-                Write-ColorOutput " Pending directory clean up." -ForegroundColor Green -Symbol Pending
+                Write-ColorOutput " [~] Pending directory clean up" -ForegroundColor Green
                 Write-Verbose "   Uninstall-Module for $($module.Name) did not work. Will complete in module directory removal. $($_.Exception.Message)"
             }
         }
