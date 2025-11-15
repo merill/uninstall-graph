@@ -10,6 +10,8 @@ To publish the script to the PowerShell gallery, run the following command from 
 
 ```powershell
 $key = Read-Host -Prompt 'Enter your API key' -AsSecureString
-$nugetKey = ConvertFrom-SecureString $key -AsPlainText
-Publish-Script -Path ./src/Uninstall-Graph.ps1 -NuGetApiKey $nugetKey
+
+./build/Build-Module.ps1 -Task Build
+./build/Build-Module.ps1 -Task Test
+./build/Build-Module.ps1 -Task Publish -ApiKey $key
 ```

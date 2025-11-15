@@ -8,7 +8,7 @@ param(
 
     [string]$Repository = 'PSGallery',
 
-    [string]$ApiKey
+    [SecureString]$ApiKey
 )
 
 # Clean output directory
@@ -131,7 +131,9 @@ function Invoke-Publish {
     Write-Host "Publishing Uninstall-Graph module to $Repository..." -ForegroundColor Cyan
 
     try {
-        Publish-Module -Path $OutputPath -Repository $Repository -NuGetApiKey $ApiKey
+        # Convert SecureString to plain text for Publish-Module
+        $plainKey = ConvertFrom-SecureString $ApiKey -AsPlainText
+        Publish-Module -Path $OutputPath -Repository $Repository -NuGetApiKey $plainKey
         Write-Host "✅ Module published successfully!" -ForegroundColor Green
     }
     catch {
