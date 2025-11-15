@@ -1,26 +1,29 @@
 function Get-InstalledGraphModules {
     <#
     .SYNOPSIS
-    Retrieves Microsoft Graph modules that were installed from PowerShell Gallery.
+    Retrieves Microsoft Graph and/or Entra modules that were installed from PowerShell Gallery.
 
     .DESCRIPTION
-    This function gets a list of Microsoft Graph modules that were installed via Install-Module from PowerShell Gallery.
+    This function gets a list of Microsoft Graph and/or Entra modules that were installed via Install-Module from PowerShell Gallery.
+
+    .PARAMETER IncludeGraph
+    Includes Microsoft.Graph* modules in the search.
 
     .PARAMETER IncludeEntra
-    Also includes Microsoft.Entra* modules in the search.
+    Includes Microsoft.Entra* modules in the search.
 
     .OUTPUTS
-    [System.Management.Automation.PSModuleInfo[]] Array of installed Microsoft Graph modules.
+    [System.Management.Automation.PSModuleInfo[]] Array of installed modules.
     #>
     [CmdletBinding()]
     param(
+        [switch]$IncludeGraph = $true,
         [switch]$IncludeEntra
     )
 
     try {
         $installedModules = Get-InstalledModule | Where-Object {
-            $_.Name -like "Microsoft.Graph*" -or
-            $_.Name -eq "Microsoft.Graph" -or
+            ($IncludeGraph -and ($_.Name -like "Microsoft.Graph*" -or $_.Name -eq "Microsoft.Graph")) -or
             ($IncludeEntra -and $_.Name -like "Microsoft.Entra*")
         }
         return $installedModules

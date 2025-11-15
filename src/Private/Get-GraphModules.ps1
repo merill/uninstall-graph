@@ -1,26 +1,29 @@
 function Get-GraphModules {
     <#
     .SYNOPSIS
-    Retrieves all Microsoft Graph modules available in the system.
+    Retrieves Microsoft Graph and/or Entra modules available in the system.
 
     .DESCRIPTION
-    This function searches for all Microsoft Graph PowerShell modules that are available in the module paths.
+    This function searches for Microsoft Graph and/or Entra PowerShell modules that are available in the module paths.
+
+    .PARAMETER IncludeGraph
+    Includes Microsoft.Graph* modules in the search.
 
     .PARAMETER IncludeEntra
-    Also includes Microsoft.Entra* modules in the search.
+    Includes Microsoft.Entra* modules in the search.
 
     .OUTPUTS
-    [System.Management.Automation.PSModuleInfo[]] Array of Microsoft Graph modules found.
+    [System.Management.Automation.PSModuleInfo[]] Array of modules found.
     #>
     [CmdletBinding()]
     param(
+        [switch]$IncludeGraph = $true,
         [switch]$IncludeEntra
     )
 
-    $graphModules = Get-Module -ListAvailable | Where-Object {
-        $_.Name -like "Microsoft.Graph*" -or
-        $_.Name -eq "Microsoft.Graph" -or
+    $modules = Get-Module -ListAvailable | Where-Object {
+        ($IncludeGraph -and ($_.Name -like "Microsoft.Graph*" -or $_.Name -eq "Microsoft.Graph")) -or
         ($IncludeEntra -and $_.Name -like "Microsoft.Entra*")
     }
-    return $graphModules
+    return $modules
 }

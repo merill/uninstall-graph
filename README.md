@@ -28,6 +28,24 @@ Run without elevated permission on Windows:
 Uninstall-Graph -SkipAdminCheck
 ```
 
+Uninstall only Microsoft Entra PowerShell modules (does not uninstall Microsoft Graph modules):
+
+```powershell
+Uninstall-Graph -Entra
+```
+
+Uninstall both Microsoft Graph and Microsoft Entra PowerShell modules:
+
+```powershell
+Uninstall-Graph -All
+```
+
+### Parameters
+
+- **`-SkipAdminCheck`**: Skips the administrator privileges check on Windows systems
+- **`-Entra`**: Uninstalls only Microsoft.Entra* modules (does not remove Microsoft Graph modules)
+- **`-All`**: Uninstalls both Microsoft.Graph* and Microsoft.Entra* modules
+
 ## Why not just use `Uninstall-Module`?
 
 Microsoft Graph comes with a large number of modules and the installed versions and dependencies can sometimes cause issues when trying to update or reinstall them.
