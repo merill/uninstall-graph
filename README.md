@@ -60,56 +60,6 @@ and restore your PowerShell environment to a clean state.
 
 You can then download and do a fresh install of the latest version of Microsoft Graph PowerShell modules.
 
-## Development
-
-### Building the Module
-
-To build the module from source:
-
-```powershell
-./build/Build-Module.ps1 -Task Build
-```
-
-### Testing the Module
-
-To build and test the module:
-
-```powershell
-./build/Build-Module.ps1 -Task Test
-```
-
-### Installing Locally
-
-To build, test, and install the module to your local PowerShell modules directory:
-
-```powershell
-./build/Build-Module.ps1 -Task Install
-```
-
-### Publishing to PowerShell Gallery
-
-To build, test, and publish the module to PowerShell Gallery:
-
-```powershell
-$apiKey = Read-Host -AsSecureString -Prompt "Enter your PSGallery API Key"
-./build/Build-Module.ps1 -Task Publish -ApiKey $apiKey
-```
-
-You can also specify a different repository:
-
-```powershell
-$apiKey = Read-Host -AsSecureString -Prompt "Enter your API Key"
-./build/Build-Module.ps1 -Task Publish -ApiKey $apiKey -Repository "MyPrivateRepo"
-```
-
-### Cleaning Build Artifacts
-
-To remove the build output directory:
-
-```powershell
-./build/Build-Module.ps1 -Task Clean
-```
-
 ## Reporting issues
 
 If you run into any problems and edge cases with the module please open an issue. 
