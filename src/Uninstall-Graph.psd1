@@ -21,13 +21,13 @@
     Copyright = 'Copyright (c) 2025 Merill Fernando. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description = 'Completely uninstalls and removes all Microsoft Graph PowerShell modules from the system. Microsoft Graph comes with a large number of modules and the installed versions and dependencies can sometimes cause issues when trying to update or reinstall them. This module ensures that all Microsoft Graph modules are thoroughly removed from your system, and restore your PowerShell environment to a clean state.'
+    Description = 'Completely uninstalls and removes all Microsoft Graph, Azure PowerShell (Az), and legacy AzureRM modules from the system. These modules come with a large number of sub-modules and the installed versions and dependencies can sometimes cause issues when trying to update or reinstall them. This module ensures thorough removal and restores your PowerShell environment to a clean state. Use Uninstall-Graph for Graph/Entra modules, Uninstall-Az for Az and AzureRM modules, or Uninstall-All to remove everything.'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '5.1'
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Uninstall-Graph')
+    FunctionsToExport = @('Uninstall-Graph', 'Uninstall-Az', 'Uninstall-All')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport = @()
@@ -42,7 +42,7 @@
     PrivateData = @{
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @('Microsoft', 'Graph', 'PowerShell', 'Uninstall', 'Module', 'Cleanup')
+            Tags = @('Microsoft', 'Graph', 'Az', 'Azure', 'AzureRM', 'PowerShell', 'Uninstall', 'Module', 'Cleanup')
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/merill/uninstall-graph/blob/main/LICENSE'
