@@ -4,6 +4,8 @@ Completely uninstalls and removes all Microsoft Graph, Microsoft Entra, Azure Po
 
 [![PSGallery Release Version](https://img.shields.io/powershellgallery/v/uninstall-graph.svg?style=flat&logo=powershell&label=Release%20Version)](https://www.powershellgallery.com/packages/uninstall-graph) [![PSGallery Downloads](https://img.shields.io/powershellgallery/dt/uninstall-graph.svg?style=flat&logo=powershell&label=PSGallery%20Downloads)](https://www.powershellgallery.com/packages/uninstall-graph)
 
+![Uninstall-Graph screenshot](assets/screenshot.png)
+
 ## Quick Reference
 
 | Command | What it removes |
